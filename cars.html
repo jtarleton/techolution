@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cars</title>
+    <link rel="stylesheet" src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"></link>
+    <style>
+        #cars_model {
+                display:none;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<fieldset>
+    <legend>Cars</legend>
+<p>
+{{car_makes}}
+</p>
+
+<p>
+{{car_models}}
+</p>
+</fieldset>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script>
+       function refresh_car_models(data) {
+            jQuery('#cars_model').empty();
+            for (i in data) {
+                jQuery('#cars_model').append('<option value=' + data[i].model + '>' + data[i].model + '</option>');
+            }
+       }
+       
+       jQuery(document).ready(function() {
+            jQuery('#cars_make').bind('change', function() {
+
+                jQuery.ajax({
+                        method: 'GET',
+                        url: 'cars.php', 
+                        data: 'make=' + jQuery(this).val(), 
+                        dataType: 'json',
+                        success: function(data) {
+                            refresh_car_models(data);
+                        }
+                });
+
+                if (jQuery(this).val().length > 0) {
+                    jQuery('#cars_model').fadeIn();
+                }
+                else {
+                    jQuery('#cars_model').fadeOut();
+                } 
+
+            });
+       });
+</script>
+</body>
+</html>
+
