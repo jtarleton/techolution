@@ -94,7 +94,7 @@ function preprocess_view() {
   $pdo = \TecholutionTask\QuickDB::getInstance();
   $allCars = \TecholutionTask\Car::findByCriteria();
 
-  $makes = '<select id="cars_make" name="make"><option value="">Select</option>';
+  $makes = '<select id="cars_make" name="make"><option value="">Select Make</option>';
   foreach(\TecholutionTask\Car::findUniqueMakes($allCars) as $make) {
   	$makes .= sprintf('<option value="%s">%s</option>', $make, $make);
   }

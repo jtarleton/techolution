@@ -20,20 +20,51 @@
 <p>
 {{car_models}}
 </p>
+<div id="car_pic"></div>
 </fieldset>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script>
+
+       /** 
+	* Refresh model select options
+        */
        function refresh_car_models(data) {
-            jQuery('#cars_model').empty();
+            jQuery('#car_pic').html('');
+	    jQuery('#cars_model').empty().append('<option value="">Select Model</option>');
             for (i in data) {
                 jQuery('#cars_model').append('<option value=' + data[i].model + '>' + data[i].model + '</option>');
-            }
+	    }
+       }
+
+       /** 
+	* Write the Image element to the HTML on model change event
+        */
+       function display_pic() {
+       	  jQuery('#cars_model').bind('change', function() {
+		jQuery.ajax({
+                        method: 'GET',
+                        url: 'cars.php', 
+                        data: 'make=' + jQuery('#cars_make').val(), 
+                        dataType: 'json',
+                        success: function(data) {
+				jQuery('#car_pic').html('');
+                        	for(i in data) {
+				  if (jQuery('#cars_model').val() == data[i].model) {
+                        		jQuery('#car_pic').html('<img src="' + data[i].url + '"></img>');
+                		  } 
+				}
+                        }
+                });
+	  });
        }
        
+       /**
+	* Document ready event handler
+	*/
        jQuery(document).ready(function() {
             jQuery('#cars_make').bind('change', function() {
-
+		// Read car data json from server, passing make request param.
                 jQuery.ajax({
                         method: 'GET',
                         url: 'cars.php', 
@@ -52,6 +83,7 @@
                 } 
 
             });
+       	    display_pic();
        });
 </script>
 </body>
