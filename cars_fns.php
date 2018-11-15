@@ -55,7 +55,7 @@ class QuickDB
     } 
 }
 
-class Car implements ArrayAccess
+class Car implements \ArrayAccess
 {
   private $make, $model;
   private $container = array();
@@ -91,7 +91,7 @@ class Car implements ArrayAccess
   public static function findUniqueMakes(array $allCars) {
     $uniqueMakes = array();
     foreach ($allCars as $car) {
-      $uniqueMakes[$car->make] = $car->make;
+      $uniqueMakes[$car['make']] = $car['make'];
     }
     return $uniqueMakes;
   }
